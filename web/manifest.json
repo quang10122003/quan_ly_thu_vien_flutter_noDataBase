@@ -1,6 +1,6 @@
 {
-    "name": "quan_ly_thu_vien",
-    "short_name": "quan_ly_thu_vien",
+    "name": "quan_ly_thu_vien_flutter",
+    "short_name": "quan_ly_thu_vien_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

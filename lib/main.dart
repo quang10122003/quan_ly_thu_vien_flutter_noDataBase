@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:quan_ly_thu_vien/model/Quan_ly_thu_vien.dart';
-import 'package:quan_ly_thu_vien/model/trang_thi.dart';
-import 'package:quan_ly_thu_vien/wiget/quan_ly_sach.dart';
-import './wiget/home.dart';
+import 'package:quan_ly_thu_vien_flutter/wiget/setting_form/setting.dart';
+import 'package:quan_ly_thu_vien_flutter/wiget/tra_sach_form/tra_sach.dart';
+import './model/Quan_ly_thu_vien.dart';
+import './model/trang_thai.dart';
+import './wiget/quan_ly_sach_form/quan_ly_sach_form.dart';
 import 'package:provider/provider.dart';
+import './wiget/muon_sach_form/muon_sach.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -17,8 +19,10 @@ class MyApp extends StatelessWidget {
     child: MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => Home_Page(),
-        '/quan_ly_sach': (context) => Quan_ly_sach()
+        '/': (context) => Quan_ly_sach_form(),
+        // '/muon_sach': (context) => Muon_sach(),
+        // '/tra_sach':(context) => Tra_sach(),
+        '/setting':(context) => Setting(),
       },
     ),);
   }
