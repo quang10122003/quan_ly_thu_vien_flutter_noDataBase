@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Quan_ly_sach_form(),
-        // '/muon_sach': (context) => Muon_sach(),
-        // '/tra_sach':(context) => Tra_sach(),
+        '/muon_sach': (context) => Muon_sach(),
+        '/tra_sach':(context) => Tra_sach(),
         '/setting':(context) => Setting(),
       },
     ),);

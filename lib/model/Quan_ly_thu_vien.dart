@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:quan_ly_thu_vien_flutter/model/Sinh_vien.dart';
+import 'package:quan_ly_thu_vien_flutter/model/sach_muon.dart';
 import './book.dart';
 
 class LibraryManager extends ChangeNotifier {
-  List<Book> listBook = [ // quan lý tong sách trong thư viện
-    Book(id: 123456, name_book: "quang", so_luong: 2),
+  List<Book> listBook = [
+    // quan lý tong sách trong thư viện
+    Book(
+      id: 123456,
+      name_book: "quang",
+      so_luong: 2,
+    ),
     Book(id: 123454, name_book: "quaavng", so_luong: 2),
     Book(id: 123452, name_book: "quanag", so_luong: 2),
   ];
+  // list luu thong tin sinh vien
+  List<Sinh_vien> list_sinh_vien = [
+    Sinh_vien(
+        id_sinh_vien: 111111, name_sinh_vien: "đào xuân quang", khoa: "CNTT"),
+    Sinh_vien(
+        id_sinh_vien: 123456, name_sinh_vien: "nguyễn hồng hạnh", khoa: "CNTT"),
+    Sinh_vien(
+        id_sinh_vien: 123457, name_sinh_vien: "le xuan vinh", khoa: "CNTT"),
+  ];
+  Map<int, List<BorrowBooks>> quan_ly_muon = {};
   // Hàm hiển thị dialog thông báo lỗi
-  void _showErrorDialog(BuildContext context, String message) {
+  void showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -27,6 +44,54 @@ class LibraryManager extends ChangeNotifier {
       },
     );
   }
+
+  void showSuccessMessage(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Success"),
+          backgroundColor: Colors.green,
+          content: Text(
+            message,
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// lay sinh vien tu id sinh vien
+  Sinh_vien? select_sinhvien(int index) {
+    print(index);
+    for (int i = 0; i < list_sinh_vien.length; i++) {
+      if (index == list_sinh_vien[i].id_sinh_vien) {
+        return list_sinh_vien[i];
+      }
+    }
+    return new Sinh_vien(
+        id_sinh_vien: 234234, name_sinh_vien: "uih", khoa: 'khoa');
+  }
+
+  // lay book tu id book
+  Book? select_book(int index) {
+    print(index);
+    for (int i = 0; i < list_sinh_vien.length; i++) {
+      if (index == listBook[i].id) {
+        return listBook[i];
+      }
+    }
+    return null;
+  }
+
 // ham them sach moi vao thu vien
   void addBook(BuildContext context, Book book) {
     bool isID = listBook.any((element) {
@@ -42,22 +107,73 @@ class LibraryManager extends ChangeNotifier {
       }
     } else {
       // Hiển thị thông báo lỗi không sử dụng thêm thư viện
-      _showErrorDialog(context, "Sách với ID ${book.id} đã tồn tại.");
+      showErrorDialog(context, "Sách với ID ${book.id} đã tồn tại.");
     }
   }
 
   void deleteBook(BuildContext context, int index) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("đã xóa sách có id: ${listBook[index].id}")));
-    listBook.removeAt(index);
-    notifyListeners();
+    if (listBook[index].so_luong_da_muon == 0) {
+      listBook.removeAt(index);
+      showSuccessMessage(context, "đã xóa sách có id: ${listBook[index].id}");
+      notifyListeners();
+    } else {
+      showErrorDialog(context, "đang có người mượn sách ko thể xóa");
+    }
   }
 
   void editBook(BuildContext context, int index, Book book) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text("đã sửa sách có id: ${listBook[index].id}")));
     listBook[index] = book;
+    if (book.so_luong_da_muon < listBook[index].so_luong) {
+      if (listBook[index].co_the_muon == false) {
+        listBook[index].co_the_muon = true;
+      }
+      showSuccessMessage(context, "đã sửa sách có id: ${listBook[index].id}");
+      notifyListeners();
+    } else if (book.so_luong_da_muon == listBook[index].so_luong) {
+      listBook[index].co_the_muon = false;
+      showSuccessMessage(context, "đã sửa sách có id: ${listBook[index].id}");
+      notifyListeners();
+    }
+  }
+
+  void addBorrowBooks(int id_sv, int id_book, int so_sach_muon) {
+    if (quan_ly_muon.containsKey(id_sv)) {
+      BorrowBooks new_BorrowBooks =
+          BorrowBooks(id_book_muon: id_book, so_luong_sach_muon: so_sach_muon);
+      quan_ly_muon[id_sv]!.add(new_BorrowBooks);
+      select_book(id_book)!.so_luong_da_muon =
+          select_book(id_book)!.so_luong_da_muon + so_sach_muon;
+      if (select_book(id_book)!.soLuongConLai() == 0) {
+        select_book(id_book)!.co_the_muon = false;
+      }
+      notifyListeners();
+    } else {
+      // Nếu sinh viên chưa tồn tại trong quản lý mượn
+      List<BorrowBooks> borrowList = [
+        BorrowBooks(id_book_muon: id_book, so_luong_sach_muon: so_sach_muon)
+      ];
+      quan_ly_muon[id_sv] = borrowList;
+      select_book(id_book)!.so_luong_da_muon +=
+          so_sach_muon; // Cập nhật số lượng sách đã mượn
+      if (select_book(id_book)!.soLuongConLai() == 0) {
+        select_book(id_book)!.co_the_muon = false;
+      }
+    }
+    notifyListeners();
+  }
+
+  void tra_sach(int id_sinh_vien) {
+    List<BorrowBooks>? list_sach_tra = [];
+    list_sach_tra = quan_ly_muon[id_sinh_vien];
+    for (int i = 0; i < list_sach_tra!.length; i++) {
+      select_book(list_sach_tra[i].id_book_muon)!.so_luong_da_muon =
+          select_book(list_sach_tra[i].id_book_muon)!.so_luong_da_muon -
+              list_sach_tra[i].so_luong_sach_muon;
+      if (select_book(list_sach_tra[i].id_book_muon)!.co_the_muon == false) {
+        select_book(list_sach_tra[i].id_book_muon)!.co_the_muon = true;
+      }
+    }
+    quan_ly_muon.remove(id_sinh_vien);
     notifyListeners();
   }
 }

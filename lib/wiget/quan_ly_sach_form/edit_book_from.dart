@@ -114,43 +114,35 @@ class editBook extends StatelessWidget {
                               bool soluongNotChanged =
                                   soluongEditcontroler.text ==
                                       "${value.listBook[index].so_luong}";
+                              Book book = Book(
+                                id: int.parse(idEditcontroler.text),
+                                name_book: '${nameEditcontroler.text}',
+                                so_luong: int.parse(soluongEditcontroler.text),
+                                so_luong_da_muon:
+                                    value.listBook[index].so_luong_da_muon,
+                              );
                               if (idNotChanged &&
                                   nameNotChanged &&
                                   soluongNotChanged) {
                                 Navigator.of(context).pop();
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text("Lỗi"),
-                                      content:
-                                          Text("vui lòng thay đổi thông tin"),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text("OK"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                value.showErrorDialog(
+                                    context, "vui lòng thay đổi thông tin");
                                 // kiểm tra có ít nhất 1 trường thông tin tay đổi và k trường thông tin nào trống
                               } else if ((idNotChanged ||
                                       nameNotChanged ||
                                       soluongNotChanged) &&
                                   !(inputError2['id'] ?? false) &&
                                   !(inputError2['name'] ?? false) &&
-                                  !(inputError2['soluong'] ?? false)) {
+                                  !(inputError2['soluong'] ?? false) &&
+                                  (book.so_luong_da_muon <=
+                                      int.parse(soluongEditcontroler.text))) {
                                 // Nếu không có lỗi, thực hiện hàm edit
-                                Book book = Book(
-                                    id: int.parse(idEditcontroler.text),
-                                    name_book: '${nameEditcontroler.text}',
-                                    so_luong:
-                                        int.parse(soluongEditcontroler.text));
-                                value.editBook(context, index, book);
                                 Navigator.of(context).pop();
+                                value.editBook(context, index, book);
+                              } else {
+                                Navigator.of(context).pop();
+                                value.showErrorDialog(context,
+                                    "số lượng sách đã mượn =${value.listBook[index].so_luong_da_muon} tổng sách ko thể nhỏ hơn");
                               }
                               // Thông báo cho người nghe sau khi dữ liệu đã được cập nhật
                               value.notifyListeners();
