@@ -136,9 +136,15 @@ class editBook extends StatelessWidget {
                                   !(inputError2['soluong'] ?? false) &&
                                   (book.so_luong_da_muon <=
                                       int.parse(soluongEditcontroler.text))) {
+                                if (value.select_book(int.parse(idEditcontroler.text))?.id != null) {
+                                  Navigator.of(context).pop();
+                                  value.showErrorDialog(context,
+                                      "id đã tồn tại vui lòng thử lại ");
+                                } else {
+                                  Navigator.of(context).pop();
+                                  value.editBook(context, index, book);
+                                }
                                 // Nếu không có lỗi, thực hiện hàm edit
-                                Navigator.of(context).pop();
-                                value.editBook(context, index, book);
                               } else {
                                 Navigator.of(context).pop();
                                 value.showErrorDialog(context,

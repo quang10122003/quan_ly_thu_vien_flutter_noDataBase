@@ -61,14 +61,14 @@ class Form_add_muon_sach extends StatelessWidget {
 // update TextField khi nhap dung id book
     void updateBookDetails() {
       updateButtonState();
-      bool foundMatch = false; //tồn tại sinh viên có id đc nhập hay k
-      print("jrhoawhgwagoagoaoahggwag");
-      for (int i = 0; i < thu_vien.list_sinh_vien.length; i++) {
+      bool foundMatch = false;
+      //tồn tại sinh viên có id đc nhập hay k
+      for (int i = 0; i < thu_vien.listBook.length; i++) {
         if (int.tryParse(id_book_controller.text) == thu_vien.listBook[i].id) {
-          print("true");
           name_book_controller.text = thu_vien
               .select_book(int.parse(id_book_controller.text))!
               .name_book;
+
           foundMatch = true; // Đặt cờ thành true khi tìm thấy sự khớp
           break; // Thoát khỏi vòng lặp vì chúng ta đã tìm thấy sự khớp
         }
@@ -77,6 +77,7 @@ class Form_add_muon_sach extends StatelessWidget {
       // Xóa các trường chỉ nếu không có sự khớp được tìm thấy
       if (!foundMatch) {
         name_book_controller.text = '';
+        so_luong_book_controller.text = '';
       }
     }
 
@@ -284,10 +285,11 @@ class Form_add_muon_sach extends StatelessWidget {
                             Navigator.of(context).pop();
                             thu_vien.showSuccessMessage(context,
                                 "sinh viên có có id ${id_sinhvien_controller.text} mượn sách thành công");
-                            id_sinhvien_controller.text = name_sv_controller.text =
-                                khoa_controller.text = id_book_controller.text =
-                                    name_book_controller.text =
-                                        so_luong_book_controller.text = "";
+                            id_sinhvien_controller.text =
+                                name_sv_controller.text = khoa_controller.text =
+                                    id_book_controller.text =
+                                        name_book_controller.text =
+                                            so_luong_book_controller.text = "";
                           },
                     child: Text("mượn sách"),
                   ),

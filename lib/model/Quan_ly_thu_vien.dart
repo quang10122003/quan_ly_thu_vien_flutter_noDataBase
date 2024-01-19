@@ -11,17 +11,19 @@ class LibraryManager extends ChangeNotifier {
       name_book: "quang",
       so_luong: 2,
     ),
-    Book(id: 123454, name_book: "quaavng", so_luong: 2),
-    Book(id: 123452, name_book: "quanag", so_luong: 2),
+    Book(id: 1, name_book: "truyện kiểu", so_luong: 2),
+    Book(id: 2, name_book: "doremon", so_luong: 2),
+    Book(id: 3, name_book: "kiến trúc máy tính", so_luong: 2),
+    Book(id: 4, name_book: "ngữ văn 1", so_luong: 2),
   ];
   // list luu thong tin sinh vien
   List<Sinh_vien> list_sinh_vien = [
     Sinh_vien(
         id_sinh_vien: 111111, name_sinh_vien: "đào xuân quang", khoa: "CNTT"),
     Sinh_vien(
-        id_sinh_vien: 123456, name_sinh_vien: "nguyễn hồng hạnh", khoa: "CNTT"),
+        id_sinh_vien: 222222, name_sinh_vien: "nguyễn hồng hạnh", khoa: "CNTT"),
     Sinh_vien(
-        id_sinh_vien: 123457, name_sinh_vien: "le xuan vinh", khoa: "CNTT"),
+        id_sinh_vien: 333333, name_sinh_vien: "le xuan vinh", khoa: "CNTT"),
   ];
   Map<int, List<BorrowBooks>> quan_ly_muon = {};
   // Hàm hiển thị dialog thông báo lỗi
@@ -43,6 +45,12 @@ class LibraryManager extends ChangeNotifier {
         );
       },
     );
+  }
+
+  void printf() {
+    for (int i = 0; i < listBook.length; i++) {
+      print(listBook[i].name_book);
+    }
   }
 
   void showSuccessMessage(BuildContext context, String message) {
@@ -70,25 +78,24 @@ class LibraryManager extends ChangeNotifier {
   }
 
 // lay sinh vien tu id sinh vien
-  Sinh_vien? select_sinhvien(int index) {
-    print(index);
+  Sinh_vien? select_sinhvien(int id) {
     for (int i = 0; i < list_sinh_vien.length; i++) {
-      if (index == list_sinh_vien[i].id_sinh_vien) {
+      if (id == list_sinh_vien[i].id_sinh_vien) {
         return list_sinh_vien[i];
       }
     }
-    return new Sinh_vien(
-        id_sinh_vien: 234234, name_sinh_vien: "uih", khoa: 'khoa');
+    return null;
   }
 
   // lay book tu id book
-  Book? select_book(int index) {
-    print(index);
-    for (int i = 0; i < list_sinh_vien.length; i++) {
-      if (index == listBook[i].id) {
+  Book? select_book(int id) {
+    print(id);
+    for (int i = 0; i < listBook.length; i++) {
+      if (id == listBook[i].id) {
         return listBook[i];
       }
     }
+
     return null;
   }
 
@@ -99,12 +106,9 @@ class LibraryManager extends ChangeNotifier {
     });
 
     if (isID == false) {
+      printf() ;
       listBook.add(book);
       notifyListeners();
-      print("object");
-      for (int i = 0; i < listBook.length; i++) {
-        print(listBook[i].id);
-      }
     } else {
       // Hiển thị thông báo lỗi không sử dụng thêm thư viện
       showErrorDialog(context, "Sách với ID ${book.id} đã tồn tại.");
@@ -113,11 +117,12 @@ class LibraryManager extends ChangeNotifier {
 
   void deleteBook(BuildContext context, int index) {
     if (listBook[index].so_luong_da_muon == 0) {
-      listBook.removeAt(index);
-      showSuccessMessage(context, "đã xóa sách có id: ${listBook[index].id}");
+      final removedBook = listBook.removeAt(index);
+      showSuccessMessage(context, "đã xóa sách có id: ${removedBook.id}");
       notifyListeners();
+      printf();
     } else {
-      showErrorDialog(context, "đang có người mượn sách ko thể xóa");
+      showErrorDialog(context, "đang có người mượn sách, không thể xóa");
     }
   }
 

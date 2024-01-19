@@ -98,6 +98,7 @@ class Addbook extends StatelessWidget {
                             );
                             Navigator.of(context).pop();
                             value.addBook(context, newBook);
+                            value.printf();
                             idController.text = "";
                             nameController.text = "";
                             soluongController.text = "";
