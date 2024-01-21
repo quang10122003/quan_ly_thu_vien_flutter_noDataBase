@@ -5,7 +5,7 @@ import './book.dart';
 
 class LibraryManager extends ChangeNotifier {
   List<Book> listBook = [
-    // quan lý tong sách trong thư viện
+    // quản lý tổng sách trong thư viện 
     Book(
       id: 123456,
       name_book: "quang",
@@ -16,15 +16,16 @@ class LibraryManager extends ChangeNotifier {
     Book(id: 3, name_book: "kiến trúc máy tính", so_luong: 2),
     Book(id: 4, name_book: "ngữ văn 1", so_luong: 2),
   ];
-  // list luu thong tin sinh vien
+  // thông tin sinh viên 
   List<Sinh_vien> list_sinh_vien = [
     Sinh_vien(
         id_sinh_vien: 111111, name_sinh_vien: "đào xuân quang", khoa: "CNTT"),
-    Sinh_vien(
+    Sinh_vien(  
         id_sinh_vien: 222222, name_sinh_vien: "nguyễn hồng hạnh", khoa: "CNTT"),
     Sinh_vien(
         id_sinh_vien: 333333, name_sinh_vien: "le xuan vinh", khoa: "CNTT"),
   ];
+  // lưu thông tin mượn trả sách 
   Map<int, List<BorrowBooks>> quan_ly_muon = {};
   // Hàm hiển thị dialog thông báo lỗi
   void showErrorDialog(BuildContext context, String message) {
@@ -46,7 +47,7 @@ class LibraryManager extends ChangeNotifier {
       },
     );
   }
-
+// Hàm hiển thị dialog thông báo thành công 
   void showSuccessMessage(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -106,6 +107,7 @@ class LibraryManager extends ChangeNotifier {
       showErrorDialog(context, "Sách với ID ${book.id} đã tồn tại.");
     }
   }
+  // hàm xóa sách khỏi thư viện 
 
   void deleteBook(BuildContext context, int index) {
     if (listBook[index].so_luong_da_muon == 0) {
@@ -116,7 +118,7 @@ class LibraryManager extends ChangeNotifier {
       showErrorDialog(context, "đang có người mượn sách, không thể xóa");
     }
   }
-
+// hàm chỉnh sửa sách trong thư viện 
   void editBook(BuildContext context, int index, Book book) {
     listBook[index] = book;
     if (book.so_luong_da_muon < listBook[index].so_luong) {
@@ -131,7 +133,7 @@ class LibraryManager extends ChangeNotifier {
       notifyListeners();
     }
   }
-
+// hàm mượn sách
   void addBorrowBooks(int id_sv, int id_book, int so_sach_muon) {
     if (quan_ly_muon.containsKey(id_sv)) {
       BorrowBooks new_BorrowBooks =
@@ -157,7 +159,7 @@ class LibraryManager extends ChangeNotifier {
     }
     notifyListeners();
   }
-
+// hàm trả sách
   void tra_sach(int id_sinh_vien) {
     List<BorrowBooks>? list_sach_tra = [];
     list_sach_tra = quan_ly_muon[id_sinh_vien];

@@ -68,6 +68,7 @@ class Addbook extends StatelessWidget {
                                     ? "Vui lòng nhập ID"
                                     : null,
                               ),
+                              autofocus: true,
                             ),
                           ],
                         ),

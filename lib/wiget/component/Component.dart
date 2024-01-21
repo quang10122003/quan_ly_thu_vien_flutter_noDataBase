@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quan_ly_thu_vien_flutter/model/trang_thai.dart';
-
+// file lưu trữ các phần dùng chung của app 
 // app bar
 PreferredSizeWidget buildAppBar(BuildContext context) {
   final setting = Provider.of<Trang_thai>(context);

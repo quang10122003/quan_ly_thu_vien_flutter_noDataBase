@@ -1,3 +1,4 @@
+// class lưu thông tin sinh viên 
 class Sinh_vien {
   int id_sinh_vien;
   String name_sinh_vien;

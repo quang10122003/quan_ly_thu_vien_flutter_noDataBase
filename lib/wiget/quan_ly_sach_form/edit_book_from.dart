@@ -17,7 +17,7 @@ class editBook extends StatelessWidget {
     TextEditingController idEditcontroler = TextEditingController();
     TextEditingController nameEditcontroler = TextEditingController();
     TextEditingController soluongEditcontroler = TextEditingController();
-    final setting = Provider.of<Trang_thai>(context,listen: false);
+    final setting = Provider.of<Trang_thai>(context, listen: false);
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -141,106 +141,116 @@ class editBook extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
-                            onPressed: () {
-                              // Kiểm tra và cập nhật trạng thái inputError
-                              // idController.text ko trống tức là inputError['id'] = true khác null
-                              inputError2['id'] = idEditcontroler.text.isEmpty;
-                              inputError2['name'] =
-                                  nameEditcontroler.text.isEmpty;
-                              inputError2['soluong'] =
-                                  soluongEditcontroler.text.isEmpty;
-                              // nếu inputError['id'] = true tức là khác null v.v thì thì inputError['id'] ?? false == false (!inputError['id'] ?? false) == true
-                              // Kiểm tra nếu giá trị của TextEditingController không thay đổi
-                              bool idNotChanged = idEditcontroler.text ==
-                                  "${value.listBook[index].id}";
-                              bool nameNotChanged = nameEditcontroler.text ==
-                                  "${value.listBook[index].name_book}";
-                              bool soluongNotChanged =
-                                  soluongEditcontroler.text ==
-                                      "${value.listBook[index].so_luong}";
-                              Book book = Book(
-                                id: int.parse(idEditcontroler.text),
-                                name_book: '${nameEditcontroler.text}',
-                                so_luong: int.parse(soluongEditcontroler.text),
-                                so_luong_da_muon:
-                                    value.listBook[index].so_luong_da_muon,
-                              );
-                              if (idNotChanged &&
-                                  nameNotChanged &&
-                                  soluongNotChanged) {
-                                Navigator.of(context).pop();
-                                value.showErrorDialog(
-                                    context, "vui lòng thay đổi thông tin");
-                                // kiểm tra có ít nhất 1 trường thông tin tay đổi và k trường thông tin nào trống
-                              } else if ((idNotChanged ||
-                                      nameNotChanged ||
-                                      soluongNotChanged) &&
-                                  !(inputError2['id'] ?? false) &&
-                                  !(inputError2['name'] ?? false) &&
-                                  !(inputError2['soluong'] ?? false) &&
-                                  (book.so_luong_da_muon <=
-                                      int.parse(soluongEditcontroler.text))) {
-                                if (value
-                                        .select_book(
-                                            int.parse(idEditcontroler.text))
-                                        ?.id !=
-                                    null) {
+                              onPressed: () {
+                                // Kiểm tra và cập nhật trạng thái inputError
+                                // idController.text ko trống tức là inputError['id'] = true khác null
+                                inputError2['id'] =
+                                    idEditcontroler.text.isEmpty;
+                                inputError2['name'] =
+                                    nameEditcontroler.text.isEmpty;
+                                inputError2['soluong'] =
+                                    soluongEditcontroler.text.isEmpty;
+                                // nếu inputError['id'] = true tức là khác null v.v thì thì inputError['id'] ?? false == false (!inputError['id'] ?? false) == true
+                                // Kiểm tra nếu giá trị của TextEditingController không thay đổi
+                                bool idNotChanged = idEditcontroler.text ==
+                                    "${value.listBook[index].id}";
+                                bool nameNotChanged = nameEditcontroler.text ==
+                                    "${value.listBook[index].name_book}";
+                                bool soluongNotChanged =
+                                    soluongEditcontroler.text ==
+                                        "${value.listBook[index].so_luong}";
+                                Book book = Book(
+                                  id: int.parse(idEditcontroler.text),
+                                  name_book: '${nameEditcontroler.text}',
+                                  so_luong:
+                                      int.parse(soluongEditcontroler.text),
+                                  so_luong_da_muon:
+                                      value.listBook[index].so_luong_da_muon,
+                                );
+                                if (idNotChanged &&
+                                    nameNotChanged &&
+                                    soluongNotChanged) {
+                                  Navigator.of(context).pop();
+                                  value.showErrorDialog(
+                                      context, "vui lòng thay đổi thông tin");
+                                  // kiểm tra có ít nhất 1 trường thông tin tay đổi và k trường thông tin nào trống
+                                } else if ((idNotChanged ||
+                                        nameNotChanged ||
+                                        soluongNotChanged) &&
+                                    !(inputError2['id'] ?? false) &&
+                                    !(inputError2['name'] ?? false) &&
+                                    !(inputError2['soluong'] ?? false) &&
+                                    (book.so_luong_da_muon <=
+                                        int.parse(soluongEditcontroler.text))) {
+                                  if (value
+                                          .select_book(
+                                              int.parse(idEditcontroler.text))
+                                          ?.id !=
+                                      null) {
+                                    Navigator.of(context).pop();
+                                    value.showErrorDialog(context,
+                                        "id đã tồn tại vui lòng thử lại ");
+                                  } else if (value.listBook[index].id !=
+                                          int.parse(idEditcontroler.text) &&
+                                      value.listBook[index].so_luong_da_muon !=
+                                          0) {
+                                    value.showErrorDialog(context,
+                                        'sách có người mượn ko thể thay đổi thông tin');
+                                  } else {
+                                    Navigator.of(context).pop();
+                                    value.editBook(context, index, book);
+                                  }
+                                  // Nếu không có lỗi, thực hiện hàm edit
+                                } else {
                                   Navigator.of(context).pop();
                                   value.showErrorDialog(context,
-                                      "id đã tồn tại vui lòng thử lại ");
-                                } else {
-                                  Navigator.of(context).pop();
-                                  value.editBook(context, index, book);
+                                      "số lượng sách đã mượn =${value.listBook[index].so_luong_da_muon} tổng sách ko thể nhỏ hơn");
                                 }
-                                // Nếu không có lỗi, thực hiện hàm edit
-                              } else {
-                                Navigator.of(context).pop();
-                                value.showErrorDialog(context,
-                                    "số lượng sách đã mượn =${value.listBook[index].so_luong_da_muon} tổng sách ko thể nhỏ hơn");
-                              }
-                              // Thông báo cho người nghe sau khi dữ liệu đã được cập nhật
-                              value.notifyListeners();
-                            },
-                            child: Text(
-                            setting.getlanguage() == 'Vietnamese'
-                                ? "Sửa thông tin sách"
-                                : "Edit book information",
-                            style: TextStyle(fontSize: (() {
-                              try {
-                                if (setting.getfontsize1() == "nhỏ") {
-                                  return 16.0;
-                                } else if (setting.getfontsize1() == "vừa") {
-                                  return 18.0;
-                                } else {
-                                  return 20.0;
-                                }
-                              } catch (e) {
-                                return 16.0;
-                              }
-                            })()),
-                          )),
+                                // Thông báo cho người nghe sau khi dữ liệu đã được cập nhật
+                                value.notifyListeners();
+                              },
+                              child: Text(
+                                setting.getlanguage() == 'Vietnamese'
+                                    ? "Sửa thông tin sách"
+                                    : "Edit book information",
+                                style: TextStyle(fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                })()),
+                              )),
                           ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
                               child: Text(
-                            setting.getlanguage() == 'Vietnamese'
-                                ? "Hủy"
-                                : "Cancel",
-                            style: TextStyle(fontSize: (() {
-                              try {
-                                if (setting.getfontsize1() == "nhỏ") {
-                                  return 16.0;
-                                } else if (setting.getfontsize1() == "vừa") {
-                                  return 18.0;
-                                } else {
-                                  return 19.0;
-                                }
-                              } catch (e) {
-                                return 16.0;
-                              }
-                            })()),
-                          )),
+                                setting.getlanguage() == 'Vietnamese'
+                                    ? "Hủy"
+                                    : "Cancel",
+                                style: TextStyle(fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 19.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                })()),
+                              )),
                         ],
                       )
                     ],

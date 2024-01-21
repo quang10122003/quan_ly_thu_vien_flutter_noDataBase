@@ -1,7 +1,6 @@
 import 'package:quan_ly_thu_vien_flutter/model/Sinh_vien.dart';
-
+// class lưu thông tin mượn và trả sách của sinh viên
 class BorrowBooks {
-  // class quan lý sinh vien nào mươn sach
   int id_book_muon;
   int so_luong_sach_muon;
   late DateTime time_muon_sach;

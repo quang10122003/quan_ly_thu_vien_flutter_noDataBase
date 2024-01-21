@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-
+// class để lưu trang thái của setting 
 class Trang_thai extends ChangeNotifier {
   static List<String> languageList = <String>["Vietnamese", "English"];
   String Language = "Vietnamese";
-
+// thiết lập ngôn ngữ 
   void setLanguage(String language) {
     Language = language;
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       notifyListeners();
     });
   }
-
+  // trả về ngôn ngữ
   String getlanguage() {
     return Language;
   }
