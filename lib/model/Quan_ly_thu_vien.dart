@@ -47,12 +47,6 @@ class LibraryManager extends ChangeNotifier {
     );
   }
 
-  void printf() {
-    for (int i = 0; i < listBook.length; i++) {
-      print(listBook[i].name_book);
-    }
-  }
-
   void showSuccessMessage(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -89,7 +83,6 @@ class LibraryManager extends ChangeNotifier {
 
   // lay book tu id book
   Book? select_book(int id) {
-    print(id);
     for (int i = 0; i < listBook.length; i++) {
       if (id == listBook[i].id) {
         return listBook[i];
@@ -106,7 +99,6 @@ class LibraryManager extends ChangeNotifier {
     });
 
     if (isID == false) {
-      printf() ;
       listBook.add(book);
       notifyListeners();
     } else {
@@ -120,7 +112,6 @@ class LibraryManager extends ChangeNotifier {
       final removedBook = listBook.removeAt(index);
       showSuccessMessage(context, "đã xóa sách có id: ${removedBook.id}");
       notifyListeners();
-      printf();
     } else {
       showErrorDialog(context, "đang có người mượn sách, không thể xóa");
     }

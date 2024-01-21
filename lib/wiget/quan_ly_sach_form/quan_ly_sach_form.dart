@@ -11,6 +11,7 @@ class Quan_ly_sach_form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final thu_vien = Provider.of<LibraryManager>(context);
+    final setting = Provider.of<Trang_thai>(context);
     return Scaffold(
       appBar: buildAppBar(context),
       body: SafeArea(
@@ -32,10 +33,24 @@ class Quan_ly_sach_form extends StatelessWidget {
                       child: ListTile(
                         leading: Icon(Icons.menu_book_outlined),
                         title: Text(
-                          "Tên sách: ${thu_vien.listBook[index].name_book}",
+                          setting.getlanguage() == 'Vietnamese'
+                              ? "Tên sách: ${thu_vien.listBook[index].name_book}"
+                              : "Book name: ${thu_vien.listBook[index].name_book}",
                           style: TextStyle(
+                            fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 17.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 19.0;
+                                } else {
+                                  return 21.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            })(),
                             color: Colors.white,
-                            fontSize: 17,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -43,12 +58,72 @@ class Quan_ly_sach_form extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "ID: ${thu_vien.listBook[index].id}",
-                              style: TextStyle(color: Colors.white),
+                              // "ID: ${thu_vien.listBook[index].id}",
+                              // style: TextStyle(color: Colors.white),
+                              setting.getlanguage() == 'Vietnamese'
+                                  ? "Id sách: ${thu_vien.listBook[index].id}"
+                                  : "Book id: ${thu_vien.listBook[index].id}",
+                              style: TextStyle(
+                                fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 15.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 17.0;
+                                    } else {
+                                      return 19.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                })(),
+                                color: Colors.white,
+                              ),
                             ),
                             Text(
-                              "Số lượng: ${thu_vien.listBook[index].so_luong}",
-                              style: TextStyle(color: Colors.white),
+                              setting.getlanguage() == 'Vietnamese'
+                                  ? "Số lượng: ${thu_vien.listBook[index].so_luong}"
+                                  : "Quantity: ${thu_vien.listBook[index].so_luong}",
+                              style: TextStyle(
+                                fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 15.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 17.0;
+                                    } else {
+                                      return 19.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                })(),
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              setting.getlanguage() == 'Vietnamese'
+                                  ? "Số lượng đã mượn: ${thu_vien.listBook[index].so_luong_da_muon}"
+                                  : "Amount borrowed: ${thu_vien.listBook[index].so_luong_da_muon}",
+                              style: TextStyle(
+                                fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 15.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 17.0;
+                                    } else {
+                                      return 19.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                })(),
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),

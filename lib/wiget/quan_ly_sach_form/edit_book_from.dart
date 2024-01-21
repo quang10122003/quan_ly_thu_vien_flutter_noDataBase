@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quan_ly_thu_vien_flutter/model/Quan_ly_thu_vien.dart';
 import 'package:quan_ly_thu_vien_flutter/model/book.dart';
+import 'package:quan_ly_thu_vien_flutter/model/trang_thai.dart';
 
 class editBook extends StatelessWidget {
   var index;
@@ -16,7 +17,7 @@ class editBook extends StatelessWidget {
     TextEditingController idEditcontroler = TextEditingController();
     TextEditingController nameEditcontroler = TextEditingController();
     TextEditingController soluongEditcontroler = TextEditingController();
-
+    final setting = Provider.of<Trang_thai>(context,listen: false);
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -50,12 +51,27 @@ class editBook extends StatelessWidget {
                               keyboardType: TextInputType.number,
                               controller: idEditcontroler,
                               decoration: InputDecoration(
-                                labelText: "id sách",
-                                errorText:
-                                    // nếu inputid = false tức là == null thì lấy giá trị flase, => biểu thức inputError['id'] ?? false ==true => errorText = "Vui lòng nhập ID" nếu inputid == true => biểu thức inputError['id'] ?? false == false => errorText = null
-                                    inputError2['id'] ?? false
-                                        ? "Vui lòng nhập ID"
-                                        : null,
+                                labelText: setting.getlanguage() == 'Vietnamese'
+                                    ? "ID sách"
+                                    : "Book id",
+                                labelStyle: TextStyle(
+                                    fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                }())),
+                                errorText: inputError2['id'] ?? false
+                                    ? "Vui lòng nhập ID"
+                                    : null,
                               ),
                             ),
                           ],
@@ -66,12 +82,26 @@ class editBook extends StatelessWidget {
                         child: TextField(
                           controller: nameEditcontroler,
                           decoration: InputDecoration(
-                            labelText: "tên sách",
-                            errorText:
-                                // nếu inputid = false tức là == null thì lấy giá trị flase, => biểu thức inputError['id'] ?? false ==true => errorText = "Vui lòng nhập ID" nếu inputid == true => biểu thức inputError['id'] ?? false == false => errorText = null
-                                inputError2['name'] ?? false
-                                    ? "Vui lòng nhập tên sách"
-                                    : null,
+                            labelText: setting.getlanguage() == 'Vietnamese'
+                                ? "Tên sách"
+                                : "Name book",
+                            labelStyle: TextStyle(
+                                fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 16.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 18.0;
+                                } else {
+                                  return 20.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            }())),
+                            errorText: inputError2['name'] ?? false
+                                ? "Vui lòng nhập tên sách"
+                                : null,
                           ),
                         ),
                       ),
@@ -84,12 +114,26 @@ class editBook extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           controller: soluongEditcontroler,
                           decoration: InputDecoration(
-                            labelText: "số lượng",
-                            errorText:
-                                // nếu inputid = false tức là == null thì lấy giá trị flase, => biểu thức inputError['id'] ?? false ==true => errorText = "Vui lòng nhập ID" nếu inputid == true => biểu thức inputError['id'] ?? false == false => errorText = null
-                                inputError2['soluong'] ?? false
-                                    ? "Vui lòng nhập số lượng"
-                                    : null,
+                            labelText: setting.getlanguage() == 'Vietnamese'
+                                ? "Số lượng"
+                                : "Quantity",
+                            labelStyle: TextStyle(
+                                fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 16.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 18.0;
+                                } else {
+                                  return 20.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            }())),
+                            errorText: inputError2['soluong'] ?? false
+                                ? "Vui lòng nhập số lượng"
+                                : null,
                           ),
                         ),
                       ),
@@ -136,7 +180,11 @@ class editBook extends StatelessWidget {
                                   !(inputError2['soluong'] ?? false) &&
                                   (book.so_luong_da_muon <=
                                       int.parse(soluongEditcontroler.text))) {
-                                if (value.select_book(int.parse(idEditcontroler.text))?.id != null) {
+                                if (value
+                                        .select_book(
+                                            int.parse(idEditcontroler.text))
+                                        ?.id !=
+                                    null) {
                                   Navigator.of(context).pop();
                                   value.showErrorDialog(context,
                                       "id đã tồn tại vui lòng thử lại ");
@@ -153,13 +201,46 @@ class editBook extends StatelessWidget {
                               // Thông báo cho người nghe sau khi dữ liệu đã được cập nhật
                               value.notifyListeners();
                             },
-                            child: Text("Sửa"),
-                          ),
+                            child: Text(
+                            setting.getlanguage() == 'Vietnamese'
+                                ? "Sửa thông tin sách"
+                                : "Edit book information",
+                            style: TextStyle(fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 16.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 18.0;
+                                } else {
+                                  return 20.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            })()),
+                          )),
                           ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text("Hủy"))
+                              child: Text(
+                            setting.getlanguage() == 'Vietnamese'
+                                ? "Hủy"
+                                : "Cancel",
+                            style: TextStyle(fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 16.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 18.0;
+                                } else {
+                                  return 19.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            })()),
+                          )),
                         ],
                       )
                     ],
@@ -176,6 +257,7 @@ class editBook extends StatelessWidget {
     // TODO: implement build
     // throw UnimplementedError();
     final thu_vien = Provider.of<LibraryManager>(context);
+    final setting = Provider.of<Trang_thai>(context);
     return PopupMenuButton<String>(
       onSelected: (value) {
         switch (value) {
@@ -191,11 +273,23 @@ class editBook extends StatelessWidget {
         return [
           PopupMenuItem<String>(
             value: 'edit',
-            child: Text('Sửa'),
+            child: Text((() {
+              if (setting.getlanguage() == "Vietnamese") {
+                return "sửa";
+              } else {
+                return "edit";
+              }
+            })()),
           ),
           PopupMenuItem<String>(
             value: 'delete',
-            child: Text('Xóa'),
+            child: Text((() {
+              if (setting.getlanguage() == "Vietnamese") {
+                return "xóa";
+              } else {
+                return "delete";
+              }
+            })()),
           ),
         ];
       },

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:quan_ly_thu_vien_flutter/model/Quan_ly_thu_vien.dart';
 import 'package:quan_ly_thu_vien_flutter/model/book.dart';
+import 'package:quan_ly_thu_vien_flutter/model/trang_thai.dart';
 
 class Addbook extends StatelessWidget {
   Map<String, bool> inputError = {
@@ -16,6 +17,7 @@ class Addbook extends StatelessWidget {
   TextEditingController soluongController = TextEditingController();
 
   void formAddBookformat(BuildContext context) {
+    final setting = Provider.of<Trang_thai>(context, listen: false);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -44,7 +46,24 @@ class Addbook extends StatelessWidget {
                               keyboardType: TextInputType.number,
                               controller: idController,
                               decoration: InputDecoration(
-                                labelText: "ID sách",
+                                labelText: setting.getlanguage() == 'Vietnamese'
+                                    ? "ID sách"
+                                    : "Book id",
+                                labelStyle: TextStyle(
+                                    fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                }())),
                                 errorText: inputError['id'] ?? false
                                     ? "Vui lòng nhập ID"
                                     : null,
@@ -58,7 +77,23 @@ class Addbook extends StatelessWidget {
                         child: TextField(
                           controller: nameController,
                           decoration: InputDecoration(
-                            labelText: "Tên sách",
+                            labelText: setting.getlanguage() == 'Vietnamese'
+                                ? "Tên sách"
+                                : "Name book",
+                            labelStyle: TextStyle(
+                                fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 16.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 18.0;
+                                } else {
+                                  return 20.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            }())),
                             errorText: inputError['name'] ?? false
                                 ? "Vui lòng nhập tên sách"
                                 : null,
@@ -74,7 +109,23 @@ class Addbook extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           controller: soluongController,
                           decoration: InputDecoration(
-                            labelText: "Số lượng",
+                            labelText: setting.getlanguage() == 'Vietnamese'
+                                ? "Số lượng"
+                                : "Quantity",
+                            labelStyle: TextStyle(
+                                fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 16.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 18.0;
+                                } else {
+                                  return 20.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            }())),
                             errorText: inputError['soluong'] ?? false
                                 ? "Vui lòng nhập số lượng"
                                 : null,
@@ -82,31 +133,46 @@ class Addbook extends StatelessWidget {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          inputError['id'] = idController.text.isEmpty;
-                          inputError['name'] = nameController.text.isEmpty;
-                          inputError['soluong'] =
-                              soluongController.text.isEmpty;
+                          onPressed: () {
+                            inputError['id'] = idController.text.isEmpty;
+                            inputError['name'] = nameController.text.isEmpty;
+                            inputError['soluong'] =
+                                soluongController.text.isEmpty;
 
-                          if (!(inputError['id'] ?? false) &&
-                              !(inputError['name'] ?? false) &&
-                              !(inputError['soluong'] ?? false)) {
-                            Book newBook = Book(
-                              id: int.parse(idController.text),
-                              name_book: nameController.text,
-                              so_luong: int.parse(soluongController.text),
-                            );
-                            Navigator.of(context).pop();
-                            value.addBook(context, newBook);
-                            value.printf();
-                            idController.text = "";
-                            nameController.text = "";
-                            soluongController.text = "";
-                          }
-                          value.notifyListeners();
-                        },
-                        child: Text("Thêm sách vào thư viện"),
-                      ),
+                            if (!(inputError['id'] ?? false) &&
+                                !(inputError['name'] ?? false) &&
+                                !(inputError['soluong'] ?? false)) {
+                              Book newBook = Book(
+                                id: int.parse(idController.text),
+                                name_book: nameController.text,
+                                so_luong: int.parse(soluongController.text),
+                              );
+                              Navigator.of(context).pop();
+                              value.addBook(context, newBook);
+                              idController.text = "";
+                              nameController.text = "";
+                              soluongController.text = "";
+                            }
+                            value.notifyListeners();
+                          },
+                          child: Text(
+                            setting.getlanguage() == 'Vietnamese'
+                                ? "Thêm sách vào thư viện"
+                                : "Add books to library",
+                            style: TextStyle(fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 16.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 18.0;
+                                } else {
+                                  return 20.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            })()),
+                          )),
                     ],
                   ),
                 );

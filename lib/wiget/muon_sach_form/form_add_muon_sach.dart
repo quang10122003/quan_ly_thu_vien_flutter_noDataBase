@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:quan_ly_thu_vien_flutter/model/Quan_ly_thu_vien.dart';
+import 'package:quan_ly_thu_vien_flutter/model/trang_thai.dart';
 
 class Form_add_muon_sach extends StatelessWidget {
   TextEditingController id_sinhvien_controller = TextEditingController();
@@ -15,6 +16,7 @@ class Form_add_muon_sach extends StatelessWidget {
 
   void form_add_muon_sach(BuildContext context) {
     final thu_vien = Provider.of<LibraryManager>(context, listen: false);
+    final setting = Provider.of<Trang_thai>(context, listen: false);
 
     void updateButtonState() {
       // Kiểm tra xem có trường nào trống thông tin không
@@ -138,9 +140,30 @@ class Form_add_muon_sach extends StatelessWidget {
                           ],
                           keyboardType: TextInputType.number,
                           controller: id_sinhvien_controller,
-                          decoration: InputDecoration(
-                            labelText: "ID sinh viên",
-                          ),
+                          decoration:
+                          //  InputDecoration(
+                          //   labelText: "ID sinh viên",
+                          // ),
+                          InputDecoration(
+                                labelText: setting.getlanguage() == 'Vietnamese'
+                                    ? "ID sinh viên"
+                                    : "Student ID",
+                                labelStyle: TextStyle(
+                                    fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                }())),
+                              ),
                           onChanged: (value) {
                             updateSinhvienDetails();
                           },
@@ -152,12 +175,26 @@ class Form_add_muon_sach extends StatelessWidget {
                     margin: EdgeInsets.only(bottom: 5),
                     child: TextField(
                       controller: name_sv_controller,
-                      decoration: InputDecoration(
-                        labelText: "ten sinh vien",
-                        // errorText: inputError['name'] ?? false
-                        //     ? "Vui lòng nhập tên sách"
-                        //     : null,
-                      ),
+                      decoration:InputDecoration(
+                                labelText: setting.getlanguage() == 'Vietnamese'
+                                    ? "Tên sinh viên"
+                                    : "Student name",
+                                labelStyle: TextStyle(
+                                    fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                }())),
+                              ),
                       enabled: false,
                       style: TextStyle(color: Colors.black),
                     ),
@@ -171,11 +208,25 @@ class Form_add_muon_sach extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       controller: khoa_controller,
                       decoration: InputDecoration(
-                        labelText: "khoa",
-                        // errorText: inputError['soluong'] ?? false
-                        //     ? "Vui lòng nhập số lượng"
-                        //     : null,
-                      ),
+                                labelText: setting.getlanguage() == 'Vietnamese'
+                                    ? "Khoa"
+                                    : "Department",
+                                labelStyle: TextStyle(
+                                    fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                }())),
+                              ),
                       enabled: false,
                       style: TextStyle(color: Colors.black),
                     ),
@@ -192,8 +243,25 @@ class Form_add_muon_sach extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           controller: id_book_controller,
                           decoration: InputDecoration(
-                            labelText: "ID sach:",
-                          ),
+                                labelText: setting.getlanguage() == 'Vietnamese'
+                                    ? "ID sách"
+                                    : "Book ID",
+                                labelStyle: TextStyle(
+                                    fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                }())),
+                              ),
                           onChanged: (value) {
                             updateBookDetails();
                           },
@@ -207,11 +275,25 @@ class Form_add_muon_sach extends StatelessWidget {
                       controller: name_book_controller,
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
-                        labelText: "ten sach:",
-                        // errorText: inputError['name'] ?? false
-                        //     ? "Vui lòng nhập tên sách"
-                        //     : null,
-                      ),
+                                labelText: setting.getlanguage() == 'Vietnamese'
+                                    ? "Tên sách"
+                                    : "Book name",
+                                labelStyle: TextStyle(
+                                    fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                }())),
+                              ),
                       enabled: false,
                     ),
                   ),
@@ -224,7 +306,24 @@ class Form_add_muon_sach extends StatelessWidget {
                       ],
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: "so luong muon:",
+                        labelText: setting.getlanguage() == 'Vietnamese'
+                                    ? "Số lượng mượn"
+                                    : "Borrowed quantity",
+                                labelStyle: TextStyle(
+                                    fontSize: (() {
+                                  try {
+                                    if (setting.getfontsize1() == "nhỏ") {
+                                      return 16.0;
+                                    } else if (setting.getfontsize1() ==
+                                        "vừa") {
+                                      return 18.0;
+                                    } else {
+                                      return 20.0;
+                                    }
+                                  } catch (e) {
+                                    return 16.0;
+                                  }
+                                }())),
                         errorText: (() {
                           try {
                             int? bookId = int.tryParse(id_book_controller.text);
@@ -291,7 +390,24 @@ class Form_add_muon_sach extends StatelessWidget {
                                         name_book_controller.text =
                                             so_luong_book_controller.text = "";
                           },
-                    child: Text("mượn sách"),
+                    child: Text(
+                            setting.getlanguage() == 'Vietnamese'
+                                ? "Mượn sách"
+                                : "Borrow books",
+                            style: TextStyle(fontSize: (() {
+                              try {
+                                if (setting.getfontsize1() == "nhỏ") {
+                                  return 16.0;
+                                } else if (setting.getfontsize1() == "vừa") {
+                                  return 18.0;
+                                } else {
+                                  return 20.0;
+                                }
+                              } catch (e) {
+                                return 16.0;
+                              }
+                            })()),
+                          ),
                   ),
                 ],
               ),
